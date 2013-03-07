@@ -1,0 +1,571 @@
+%\documentclass[11pt,a4paper,fleqn,english]{memoir}
+\documentclass[11pt,a4paper,fleqn,english,draft]{memoir}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\usepackage{amstext}
+\usepackage{amssymb}
+
+\usepackage[bookmarks,colorlinks=true,final]{hyperref}
+
+\usepackage{natbib}
+
+\makeatletter
+
+%%%
+%%% Aus postdiploma.sty:
+%%%
+\newif\ifchaptercolors
+\chaptercolorstrue
+
+\usepackage[final]{microtype}
+
+% A4 paper size
+\settrimmedsize{297mm}{210mm}{*}
+\setlength{\trimtop}{0pt}
+\setlength{\trimedge}{\stockwidth}
+\addtolength{\trimedge}{-\paperwidth}
+
+\providecommand*{\isopage}[1][9]{%
+  \spinemargin=\paperwidth
+  \divide\spinemargin #1\relax
+  \uppermargin=\paperheight
+  \divide\uppermargin #1\relax
+  \setlrmarginsandblock{\spinemargin}{*}{2}
+  \setulmarginsandblock{\uppermargin}{*}{2}}
+%\isopage[9]
+\providecommand*{\heinerfolderpage}{%
+  \spinemargin=\paperwidth
+  \divide\spinemargin 6\relax
+  \foremargin=\paperwidth
+  \divide\foremargin 7\relax
+  \setlrmarginsandblock{\spinemargin}{\foremargin}{*}
+  \uppermargin=\paperheight
+  \divide\uppermargin 12\relax
+  \setulmarginsandblock{\uppermargin}{*}{1}}
+\heinerfolderpage
+\setheaderspaces{1.5cm}{*}{1}
+\checkandfixthelayout
+
+\usepackage{color}
+\definecolor{halfgray}{gray}{0.55}
+\definecolor{webgreen}{rgb}{0,.5,0}
+\definecolor{webbrown}{rgb}{.6,0,0}
+\definecolor{Maroon}{cmyk}{0, 0.87, 0.68, 0.32}
+\definecolor{RoyalBlue}{cmyk}{1, 0.50, 0, 0}
+%\definecolor{Black}{cmyk}{0, 0, 0, 0}
+\definecolor{black}{rgb}{0, 0, 0}
+
+\definecolor{red2}{cmyk}{0, 1, 1, 0.07}
+\definecolor{red3}{cmyk}{0, 1, 1, 0.2}
+\definecolor{darkred}{cmyk}{0, 1, 1, 0.45}
+
+% Wrapping headers not indented (Bringhurst)
+\renewcommand{\@hangfrom}[1]{\noindent{#1}}
+
+\usepackage{textcase}
+
+\setsecheadstyle{\large\raggedright\setSpacing{0.95}\scshape\MakeTextUppercase}
+\setsubsecheadstyle{\large\centering\itshape}
+\setsubsubsecheadstyle{\normalsize\raggedright\itshape}
+
+\setparaheadstyle{\normalsize\raggedright\scshape}
+\setsubparaheadstyle{\normalsize\raggedright\scshape}
+
+\setlength\mathindent{\parindent}
+
+\copypagestyle{heiner}{plain}
+
+\ifdraftdoc
+  \makeoddfoot{heiner}%
+              {}{\textsc{\thepage}}{\footnotesize [compiled
+              \printtime\ on \the\day.\,\the\month.\,\the\year]}
+\else
+  \makeoddfoot{heiner}%
+              {}{\textsc{\thepage}}{}
+\fi
+\makeevenfoot{heiner}%
+  {}{\textsc{\thepage}}{}
+
+\copypagestyle{heinerplain}{plain}
+
+\aliaspagestyle{chapter}{heinerplain}
+\pagestyle{heiner}
+
+\renewcommand{\footnoterule}{}
+\setlength{\footmarkwidth}{-1.0em}
+\setlength{\footmarksep}{-\footmarkwidth}
+\footmarkstyle{#1~}
+\renewcommand*{\@makefnmark}{\hbox{\textsuperscript{\@thefnmark}}}
+\setlength{\footnotesep}{4.2ex}
+
+% Memoir doesn't play well with setspace, but has this build in
+\setSpacing{1.2}
+
+\let\stdforall\forall
+\renewcommand{\forall}{\lower0.5ex\hbox{$\stdforall$}}
+
+% Vgl. Bringhurst
+\newcommand{\hairspace}{\kern .04167em}
+
+\microtypesetup{expansion=false}%
+\DeclareRobustCommand{\spacedallcaps}[1]{\textls[90]{\MakeTextUppercase{#1}}}%
+\DeclareRobustCommand{\spacedlowsmallcaps}[1]{\textls[80]{\scshape\MakeTextLowercase{#1}}}%
+
+% Disable single lines at the start of a paragraph (Schusterjungen)
+\clubpenalty = 10000
+% Disable single lines at the end of a paragraph (Hurenkinder)
+\widowpenalty = 10000
+\displaywidowpenalty = 10000 % formulas
+
+
+\counterwithout{section}{chapter}
+
+\setsecnumdepth{section}
+\maxsecnumdepth{section}
+
+\makechapterstyle{postdiploma}{%
+  \setlength{\beforechapskip}{10ex}
+  \setlength{\afterchapskip}{7ex}
+  \def\chapterheadstart{\phantomsection\vspace*{\beforechapskip}}
+
+  \renewcommand{\chapnumfont}{\LARGE\bfseries}
+  \renewcommand{\printchaptername}{\centering}
+  \renewcommand{\chapternamenum}{}
+  \renewcommand{\chapnamefont}{\normalfont\large}
+  \renewcommand{\printchapternum}{\centering {\chapnumfont\sectionsymbol\oldstylenums{\thechapter}}}
+  \renewcommand{\afterchapternum}{\normalsize\\[1ex]}
+  \renewcommand{\printchaptertitle}[1]{\centering {\chapnamefont\spacedallcaps{##1}}}
+  \renewcommand{\afterchaptertitle}{\par\nobreak\vskip \afterchapskip}
+}
+\chapterstyle{postdiploma}
+
+\newcommand{\addchaptertotoc}[1]{%
+  \addcontentsline{toc}{chapter}{%
+    \texorpdfstring{\MakeLowercase{#1}}{#1}}}
+\newcommand{\diplomachapter}[1]{%
+  \chapter*{#1}%
+  \addchaptertotoc{#1}}
+\newcommand{\diplomachapterandtoc}[2]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{\texorpdfstring{#2}{#1}}}
+
+\newcommand{\sectionandtoc}[2]{%
+  \section*{#1}%
+  \addcontentsline{toc}{section}{\texorpdfstring{#2}{#1}}}
+
+\setlength{\epigraphwidth}{0.8\linewidth}
+\epigraphposition{flushleft}
+\epigraphsourceposition{flushleft}
+\setlength{\epigraphrule}{0pt}
+\epigraphfontsize{\footnotesize}
+
+%%% From memmanadd, PDF-page 41
+\renewcommand*{\cftchapterfillnum}[1]{%
+  {\cftchapterleader}\nobreak
+  \hbox to 1.5em{\cftchapterpagefont \hfil#1}\cftchapterafterpnum\par}
+\renewcommand*{\cftsectionfillnum}[1]{%
+  {\cftsectionleader}\nobreak
+  \hbox to 1.5em{\cftsectionpagefont \hfil#1}\cftsectionafterpnum\par}
+
+%% memmanadd page 22 (PDF page 40)
+\ifchaptercolors
+  \renewcommand{\cftchapterfont}{\hfill\color{red3}\scshape}
+\else
+  \renewcommand{\cftchapterfont}{\hfill\scshape}
+\fi
+%\renewcommand{\cftchapterleader}{ \textperiodcentered\space}
+\renewcommand{\cftchapterleader}{\space}
+\renewcommand{\cftchapterpagefont}{\normalfont\scshape}
+\renewcommand{\cftchapterafterpnum}{\cftparfillskip}
+\setpnumwidth{0em}
+
+\renewcommand{\cftsectionfont}{\hfill\normalfont}
+\renewcommand{\cftsectionleader}{\space}
+\renewcommand{\cftsectionpresnum}{\bfseries\scshape}
+\renewcommand{\cftsectionpagefont}{\normalfont\scshape}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip}
+\setlength{\cftsectionnumwidth}{1em}
+
+\renewcommand{\contentsname}{Inhalt}
+\renewcommand{\bibname}{Literatur}
+
+\setrmarg{1.5em}
+
+%%%
+%%% Aus mathmacs.sty:
+%%%
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newif\iftheoremcolors
+\theoremcolorsfalse
+
+% Lemma-, Satz-, usw. Umgebungen
+  \usepackage{amsthm}
+  \swapnumbers
+
+  % For color redefined from amsthm.sty
+  \def\th@remark{%
+    \iftheoremcolors
+      \thm@headfont{\color{Maroon}\itshape}%
+      \thm@notefont{\/\upshape\color{black}}%
+      \thm@headpunct{\color{black}.}%
+    \else
+      \thm@headfont{\bfseries}%
+      \thm@notefont{\normalfont}%
+      \thm@headpunct{\bfseries.}%
+    \fi
+    \normalfont % body font
+    \thm@preskip\topsep \divide\thm@preskip\tw@
+    \thm@postskip\thm@preskip}
+
+  %\zerotrivseps % Vgl memman, Seite 103 (PDF-Seite 137)
+  %\newlength{\proofskip}
+  %\setlength{\proofskip}{2pt plus 1pt minus 1pt}
+  %% \renewenvironment{proof}[1][\proofname]{\par
+  %%   \pushQED{\qed}%
+  %%   \normalfont \vspace{-\topsep}\vspace{-\partopsep}\vspace{\proofskip}
+  %%   \relax
+  %%   \trivlist\tightlist
+  %% \item[\hskip\labelsep
+  %%   \itshape
+  %%   #1\@addpunct{.}]\ignorespaces
+  %% }{%
+  %%   \popQED\endtrivlist\@endpefalse
+  %% }
+
+  \theoremstyle{remark}
+  %\theoremstyle{plain} % Prof. Voigts Wunsch
+  %\newtheorem{theorem}{Theorem}[chapter]
+  \newtheorem{theorem}{Theorem}[section]
+  \newtheorem*{theorem*}{Theorem}
+
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem*{lemma*}{Lemma}
+
+  \newtheorem{proposition}[theorem]{Proposition} % Hilfssatz?
+  \newtheorem*{proposition*}{Proposition}        %          ?
+
+  \newtheorem{corollary}[theorem]{Corollary}
+  \newtheorem*{corollary*}{Corollary}
+
+  \theoremstyle{remark}
+  \newtheorem*{definition}{Definition}
+  \newtheorem*{remark}{Remark}
+  \newtheorem*{remarks}{Remarks}
+
+  %\renewcommand{\qedsymbol}{//}
+  %\renewcommand{\qed}{\hfill\mbox{\raggedright\rule{0.25em}{0.5\baselineskip}}}
+
+  \swapnumbers
+  \let\@upn\relax
+  \newtheorem{nosectheorem}{Theorem}
+  \newtheorem{noseclemma}[nosectheorem]{Lemma}
+  \newtheorem{nosecproposition}[nosectheorem]{Proposition}
+
+  %\newcommand{\thetheoremwithdot}{\alph{theorem}}
+
+\addtodef{\appendix}{}{%
+  \let\theorem\nosectheorem%
+  \let\lemma\noseclemma%
+  \let\proposition\nosecproposition
+  %\let\thetheorem\thetheoremwithdot%
+}
+
+
+%
+% Special math macros
+%
+
+% from gkpmac.tex, line 720--723
+%\def\_#1{\def\next{#1}%
+% \ifx\next\risingsign\expandafter\rising\else^{\underline{#1}}\fi}
+%\def\risingsign{^}
+%\def\rising#1{^{\overline{#1}}}
+
+% from amsldoc, page 17.
+\providecommand{\abs}[1]{\lvert#1\rvert}
+\providecommand{\norm}[1]{\lVert#1\rVert}
+% von mir ausgedacht :). Oder Fall (1) mit \bigg? Vgl. amsldoc, PDF-Seite 20
+\providecommand{\Abs}[1]{
+  \mathchoice{\Bigl\lvert#1\Bigr\rvert}%
+             {\bigl\lvert#1\bigr\rvert}%
+             {\lvert#1\rvert}%
+             {\lvert#1\rvert}}
+
+% This one with optional argument for indices. Extra { } doesn't work
+% since the contents are potentially bigger.
+\providecommand{\Norm}[2][]{
+  \mathchoice{\Bigl\lVert#2\Bigr\rVert_{#1}}%
+             {\bigl\lVert#2\bigr\rVert_{#1}}%
+             {\lVert#2\rVert_{#1}}%
+             {\lVert#2\rVert_{#1}}}
+
+% Hand selection. (Experimental)
+\providecommand{\bigabs}[1]{\bigl\lvert#1\bigr\rvert}
+\providecommand{\Bigabs}[1]{\Bigl\lvert#1\Bigr\rvert}
+\providecommand{\biggabs}[1]{\biggl\lvert#1\biggr\rvert}
+\providecommand{\Biggabs}[1]{\Biggl\lvert#1\Biggr\rvert}
+
+\providecommand{\bignorm}[1]{\bigl\lVert#1\bigr\rVert}
+\providecommand{\Bignorm}[1]{\Bigl\lVert#1\Bigr\rVert}
+\providecommand{\biggnorm}[1]{\biggl\lVert#1\biggr\rVert}
+\providecommand{\Biggnorm}[1]{\Biggl\lVert#1\Biggr\rVert}
+
+
+% The same for sets
+\providecommand{\set}[1]{\{#1\}}
+\providecommand{\Set}[1]{
+  \mathchoice{\bigl\{#1\bigr\}}%
+             {\{#1\}}%
+             {\{#1\}}%
+             {\{#1\}}}
+\providecommand{\bigset}[1]{\bigl\{#1\bigr\}}
+\providecommand{\Bigset}[1]{\Bigl\{#1\Bigr\}}
+\providecommand{\biggset}[1]{\biggl\{#1\biggr\}}
+\providecommand{\Biggset}[1]{\Biggl\{#1\Biggr\}}
+
+% The same for parentheses and brackets
+\providecommand{\parens}[1]{(#1)}
+%\providecommand{\Parens}[1]{
+%  \mathchoice{\bigl(#1\bigr)}%
+%             {(#1)}%
+%             {(#1)}%
+%             {(#1)}}
+\providecommand{\bigparens}[1]{\bigl(#1\bigr)}
+\providecommand{\Bigparens}[1]{\Bigl(#1\Bigr)}
+\providecommand{\biggparens}[1]{\biggl(#1\biggr)}
+\providecommand{\Biggparens}[1]{\Biggl(#1\Biggr)}
+\let\Parens\bigparens
+
+\providecommand{\brackets}[1]{[#1]}
+%\providecommand{\Brackets}[1]{
+%  \mathchoice{\bigl[#1\bigr]}%
+%             {[#1]}%
+%             {[#1]}%
+%             {[#1]}}
+\providecommand{\bigbrackets}[1]{\bigl[#1\bigr]}
+\providecommand{\Bigbrackets}[1]{\Bigl[#1\Bigr]}
+\providecommand{\biggbrackets}[1]{\biggl[#1\biggr]}
+\providecommand{\Biggbrackets}[1]{\Biggl[#1\Biggr]}
+\let\Brackets\bigbrackets
+
+% Way easier to type (idea of Dr. H. Vogt)
+\let\<\langle
+\let\>\rangle
+
+\providecommand{\angles}[1]{\<#1\>}
+\providecommand{\bigangles}[1]{\bigl\<#1\bigr\>}
+\providecommand{\Bigangles}[1]{\Bigl\<#1\Bigr\>}
+\providecommand{\biggangles}[1]{\biggl\<#1\biggr\>}
+\providecommand{\Biggangles}[1]{\Biggl\<#1\Biggr\>}
+\let\Angles\bigangles
+
+% Angular brackets pair
+\providecommand{\apair}[2]{\<#1,#2\>}
+\providecommand{\Apair}[2]{
+  \mathchoice{\Bigl\<#1,#2\Bigr\>}%
+             {\bigl\<#1,#2\bigr\>}%
+             {\<#1,#2\>}%
+             {\<#1,#2\>}}
+
+\providecommand{\bigmid}{\bigm\vert}
+\providecommand{\Bigmid}{\Bigm\vert}
+\providecommand{\biggmid}{\biggm\vert}
+\providecommand{\Biggmid}{\Biggm\vert}
+
+
+\DeclareMathOperator{\lin}{lin}          % Lineare Hülle
+\DeclareMathOperator{\sgn}{sgn}          % Signum
+\DeclareMathOperator{\id}{id}            % IdentitÃÂ¤t
+\DeclareMathOperator{\grad}{grad}        % Gradient
+\DeclareMathOperator{\diam}{diam}        % Diameter
+\DeclareMathOperator{\spt}{spt}          % Support
+\DeclareMathOperator{\supp}{supp}          % Support
+\DeclareMathOperator*{\esssup}{ess\,sup} % Wesentliches Supremum
+\DeclareMathOperator{\dist}{dist}        % Distance
+
+\DeclareMathOperator{\ran}{ran}          % Range
+\DeclareMathOperator{\tr}{tr}            % Trace
+\DeclareMathOperator{\Borel}{Borel}      % Borel sets
+
+\newcommand{\spec}{\sigma}               % Spectrum
+\newcommand{\resolv}{\varrho}            % Resolvent set
+
+%\newcommand{\1}{\textrm{1}}              % Indikatorfunktion
+%\newcommand{\1}{\chi}                    % Indikatorfunktion von Peter
+\newcommand{\dotid}{\,\cdot\,}           % Hier-Einsetzen-IdentitÃ¤t
+
+%% http://tex.stackexchange.com/questions/488/blackboard-bold-characters
+%\DeclareSymbolFont{bbold}{U}{bbold}{m}{n}
+%\DeclareSymbolFontAlphabet{\mathbbold}{bbold}
+%\newcommand{\1}{\mathbbold{1}}
+\newcommand{\1}{1}
+
+\let\textdef\textit
+\newcommand{\where}[1]{
+  \mathchoice{\qquad(#1)}%
+             {\,\ (#1)}%     % Dr. Vogt version
+             {\,(#1)}%       % Last two really shouldn't be used
+             {\,(#1)}}
+\newcommand{\bigwhere}[1]{
+  \mathchoice{\qquad\bigl(#1\bigr)}%
+             {\,\ \bigl(#1\bigr)}%     % Dr. Vogt version
+             {\,(#1)}%       % Last two really shouldn't be used
+             {\,(#1)}}
+
+
+% A complement to \smash, \llap, and \rlap. TUGboat 22 (2001), 350--352.
+% See http://math.arizona.edu/~aprl/publications/mathclap/
+\def\clap#1{\hbox to 0pt{\hss#1\hss}}
+\def\mathllap{\mathpalette\mathllapinternal}
+\def\mathrlap{\mathpalette\mathrlapinternal}
+\def\mathclap{\mathpalette\mathclapinternal}
+\def\mathllapinternal#1#2{%
+           \llap{$\mathsurround=0pt#1{#2}$}}
+\def\mathrlapinternal#1#2{%
+           \rlap{$\mathsurround=0pt#1{#2}$}}
+\def\mathclapinternal#1#2{%
+           \clap{$\mathsurround=0pt#1{#2}$}}
+
+
+% Abschluss, Inneres
+\providecommand{\cl}[1]{\overline{#1}}
+\DeclareMathOperator{\interior}{int}
+
+% amsldoc, page 22 (PDF page 26)
+\providecommand{\field}[1]{\mathbb{#1}}
+
+% Normales \mathbb _scheint_ zu klein für die anderen Symbole
+%\providecommand{\field}[1]{%
+%  {\mathchoice{\mbox{\small$\mathbb{#1}$}}%
+%              {\mbox{\small$\mathbb{#1}$}}%
+%              {\mbox{\large$\scriptscriptstyle\mathbb{#1}$}}%
+%              {\mbox{\footnotesize$\scriptscriptstyle\mathbb{#1}$}}}}
+
+\providecommand{\N}{\field{N}}
+\providecommand{\Z}{\field{Z}} % true fields following now :)
+\providecommand{\Q}{\field{Q}}
+\providecommand{\R}{\field{R}}
+\providecommand{\C}{\field{C}}
+\providecommand{\K}{\field{K}} % generic Field == KÃÂ¶rper
+
+\DeclareMathOperator{\TextRe}{Re}
+\DeclareMathOperator{\TextIm}{Im}
+\renewcommand{\Re}{\TextRe}
+\renewcommand{\Im}{\TextIm}
+
+% interior, with beauty (from yhmath, but hacked by me).
+\DeclareSymbolFont{yhmathsymbols}{OMX}{yhex}{m}{n}
+\DeclareMathAccent{\wideparen}{\mathord}{yhmathsymbols}{"F3}
+\edef\@tempa#1#2{\def#1{\mathaccent\string"\noexpand\accentclass@#2 }}%
+\@tempa\ring{006} % that number is correct for MinionPro; was: 017.
+\newcommand{\widering}[1]{\smash{\ensuremath{\ring{\wideparen{#1}}}}}
+
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\B}{\mathcal{B}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\J}{\mathcal{J}}
+\let\suppressedL\L
+\renewcommand{\L}{\mathcal{L}}
+\newcommand{\Zz}{\mathcal{Z}}
+\newcommand{\M}{\mathcal{M}}
+\newcommand{\Nn}{\mathcal{N}}
+\newcommand{\Cee}{\mathcal{C}}
+\newcommand{\E}{\mathcal{E}}
+
+\let\longHungarianUmlaut\H
+\renewcommand{\H}{\mathcal{H}}
+
+\newcommand{\Pot}{\mathfrak{P}}
+
+\newcommand{\T}{\mathcal{T}}
+\let\sectionsymbol\S
+\DeclareInputText{167}{\sectionsymbol} % for latin1
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\U}{\mathcal{U}}
+
+\newcommand{\Beta}{\mathrm{B}}
+\newcommand{\Rho}{\mathrm{P}}
+
+% Residue
+\DeclareMathOperator*{\Res}{Res}
+
+% Small and big O
+\newcommand{\Oh}{\mathrm{O}}
+\newcommand{\oh}{\mathrm{o}}
+
+% Airy function
+\DeclareMathOperator{\Ai}{Ai}
+
+% "Such that" für Mengen
+\providecommand{\st}{;\,}
+
+% "d" für Integrale. Roman?
+\newcommand{\upd}{\mathrm{d}}
+\let\underdot\d
+%\renewcommand{\d}{\,\upd} % Mathematiker-Version
+\renewcommand{\d}{\upd}   % Physiker-Version
+\newcommand{\dx}{\d x}
+\newcommand{\dt}{\d t}
+\newcommand{\ds}{\d s}
+\newcommand{\dy}{\d y}
+\newcommand{\dr}{\d r}
+\newcommand{\dz}{\d z}
+% Ghosts of departed quantities
+\newcommand{\dbyd}[1]{\frac{\upd}{\upd{#1}}}
+
+\newcommand{\fin}{\mathrm{fin}}
+\newcommand{\ac}{\mathrm{ac}}
+\newcommand{\loc}{\mathrm{loc}}
+\newcommand{\HS}{\mathrm{HS}}
+
+\newcommand{\textimplies}{\ensuremath{\,\Rightarrow\,}}
+
+\DeclareMathOperator{\im}{im}
+\newcommand{\PV}{\,\textsc{pv}\!\!}
+
+\DeclareMathOperator{\vol}{vol}
+
+\newcommand{\upto}{\uparrow}
+\newcommand{\downto}{\downarrow}
+
+\newcommand{\sto}{\xrightarrow{\text{s}}}
+\newcommand{\wto}{\xrightarrow{\text{w}}}
+
+% Für Hacks: Die breite einer Formelzeile
+\newlength{\mathdiplaywidth}
+\setlength{\mathdiplaywidth}{\textwidth}
+\addtolength{\mathdiplaywidth}{-\mathindent}
+\addtolength{\mathdiplaywidth}{-\columnsep}
+%\setlength{\mathdiplaywidth}{324.37518pt}
+
+\newcommand{\sigmaAlg}{\sigma}
+\newcommand{\from}{\colon}
+\newcommand{\floor}[1]{\lfloor #1\rfloor}
+
+\newcommand{\rightbar}{\bigr\rvert}
+\newcommand{\Bigrightbar}{\Bigr\rvert}
+\newcommand{\biggrightbar}{\biggr\rvert}
+\newcommand{\Biggrightbar}{\Biggr\rvert}
+\let\oldrestriction\restriction
+\renewcommand{\restriction}[1]{\rvert_{#1}}
+
+\providecommand{\raisedversal}[1]{{\Huge\swshape{#1}}}
+\midsloppy
+
+\let\notto\nrightarrow
+
+\counterwithout{section}{theorem}
+
+\makeatother
+
+\usepackage{babel}
+
+\frenchspacing
+
+\usepackage[final]{graphicx}
